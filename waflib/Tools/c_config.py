@@ -234,7 +234,10 @@ def validate_cfg(self, kw):
 	"""
 	if not 'path' in kw:
 		if not self.env.PKGCONFIG:
-			self.find_program('pkg-config', var='PKGCONFIG')
+			if os.environ.get('PKG_CONFIG'):
+				self.env.PKGCONFIG = os.environ.get('PKG_CONFIG')
+			else:
+				self.find_program('pkg-config', var='PKGCONFIG')
 		kw['path'] = self.env.PKGCONFIG
 
 	# pkg-config version
